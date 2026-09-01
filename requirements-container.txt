@@ -1,0 +1,14 @@
+# Delta de dependências aplicado só na imagem — instalado DEPOIS do requirements.txt
+# da FIAP, e por isso o substitui de forma explícita, não silenciosa.
+#
+# boto3: o requirements.txt fixa 1.26.50 (jan/2023). O app.py cria os clientes com
+# session.client("dynamodb") / session.client("sqs"), sem parâmetro endpoint_url e
+# sem nenhuma forma de configurá-lo por fora. Para apontar o serviço ao DynamoDB
+# Local do docker-compose seria preciso ou editar o app.py, ou usar as variáveis
+# AWS_ENDPOINT_URL_DYNAMODB / AWS_ENDPOINT_URL_SQS — que o botocore só passou a ler
+# a partir da série 1.31 (mai/2023).
+#
+# Subir o boto3 mantém o código-fonte da FIAP intacto e resolve os dois ambientes com
+# a mesma imagem: local aponta para o DynamoDB Local via variável de ambiente, e na
+# AWS basta não definir a variável.
+boto3>=1.34,<2

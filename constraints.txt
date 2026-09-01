@@ -1,0 +1,7 @@
+# Restrições de build — NÃO substituem o requirements.txt da FIAP, complementam.
+#
+# requirements.txt fixa Flask==2.2.2 mas não fixa o Werkzeug. O Flask 2.2.2 declara
+# apenas "Werkzeug>=2.2.2", então o pip resolve para o Werkzeug 3.x, que removeu
+# werkzeug.urls.url_quote — import que o Flask 2.2 ainda faz. Resultado sem este
+# arquivo: ImportError na subida do contêiner, antes mesmo do primeiro request.
+Werkzeug<3
