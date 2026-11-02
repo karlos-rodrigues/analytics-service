@@ -85,16 +85,16 @@ jobs:
           ignore-unfixed: true
           exit-code: "1"
       - name: Credenciais AWS (OIDC)
-        if: github.event_name == push
+        if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::217579643777:role/togglemaster-github-ci
           aws-region: ${{ env.AWS_REGION }}
       - name: Login no ECR
-        if: github.event_name == push
+        if: github.event_name == 'push'
         uses: aws-actions/amazon-ecr-login@v2
       - name: Push para o ECR
-        if: github.event_name == push
+        if: github.event_name == 'push'
         run: |
           IMG="$ECR_REGISTRY/$SERVICO:${{ steps.meta.outputs.tag }}"
           docker tag "$SERVICO:${{ steps.meta.outputs.tag }}" "$IMG"
@@ -104,7 +104,7 @@ jobs:
     name: Atualiza a tag no repositório GitOps
     runs-on: ubuntu-latest
     needs: imagem
-    if: github.event_name == push
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v7
         with:
